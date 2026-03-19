@@ -839,6 +839,111 @@
 			]
 		},
 		{
+			"name": "Reviews",
+			"item": [
+				{
+					"name": "Create Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventId\": \"paste-event-id-here\",\n  \"rating\": 5,\n  \"comment\": \"Amazing event! Learned a lot.\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/reviews",
+							"host": ["{{apiUrl}}"],
+							"path": ["reviews"]
+						},
+						"description": "Requires authentication. Only APPROVED participants can review. Rating 1-5."
+					}
+				},
+				{
+					"name": "Get My Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/reviews/my-reviews?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["reviews", "my-reviews"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Requires authentication. Get all reviews written by the logged-in user."
+					}
+				},
+				{
+					"name": "Get Event Reviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/reviews/event/:eventId?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["reviews", "event", ":eventId"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							],
+							"variable": [
+								{ "key": "eventId", "value": "" }
+							]
+						},
+						"description": "Public. Get all reviews for a specific event."
+					}
+				},
+				{
+					"name": "Update Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated: Great event but could improve time management.\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/reviews/:reviewId",
+							"host": ["{{apiUrl}}"],
+							"path": ["reviews", ":reviewId"],
+							"variable": [
+								{ "key": "reviewId", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Only the review author can update."
+					}
+				},
+				{
+					"name": "Delete Review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/reviews/:reviewId",
+							"host": ["{{apiUrl}}"],
+							"path": ["reviews", ":reviewId"],
+							"variable": [
+								{ "key": "reviewId", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Review author or Admin/Super Admin can delete."
+					}
+				}
+			]
+		},
+		{
 			"name": "Better Auth (Direct)",
 			"item": [
 				{
