@@ -7,6 +7,10 @@ import path from "path";
 import qs from "qs";
 import authRouter from "./module/auth/auth.router";
 import userRouter from "./module/user/user.router";
+import eventRouter from "./module/event/event.router";
+import participantRouter from "./module/participant/participant.router";
+import paymentRouter from "./module/payment/payment.router";
+import { paymentController } from "./module/payment/payment.controller";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFoundMiddleware } from "./middleware/notFound";
 import { envVars } from "./config/env";
@@ -16,6 +20,13 @@ const app = express();
 app.set("query parser", (str: string) => qs.parse(str));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
+
+// Stripe webhook (must be before body parsers — needs raw body)
+app.post(
+  "/api/v1/payments/webhook",
+  express.raw({ type: "application/json" }),
+  paymentController.handleStripeWebhookEvent,
+);
 
 app.use(
   cors({
@@ -46,6 +57,9 @@ app.get("/", (req: Request, res: Response) => {
 // API routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/events", eventRouter);
+app.use("/api/v1/participants", participantRouter);
+app.use("/api/v1/payments", paymentRouter);
 
 app.use(globalErrorHandler);
 app.use(notFoundMiddleware);

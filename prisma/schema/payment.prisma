@@ -3,7 +3,8 @@ model Payment {
     amount        Decimal       @db.Decimal(10, 2)
     method        PaymentMethod
     status        PaymentStatus @default(PENDING)
-    transactionId String?       @unique // Gateway transaction ID
+    transactionId String?       @unique // Stripe session ID
+    stripeEventId String?       @unique // Stripe event ID for idempotency
     gatewayData   Json? // Raw response from gateway (optional)
 
     userId String

@@ -64,6 +64,7 @@ export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
 export const PaymentMethod = {
+  STRIPE: 'STRIPE',
   SSLCOMMERZ: 'SSLCOMMERZ',
   SHURJOPAY: 'SHURJOPAY'
 } as const

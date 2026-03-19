@@ -1,0 +1,772 @@
+{
+	"info": {
+		"name": "Event Management Platform",
+		"description": "API collection for Event Management Platform backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000",
+			"type": "string"
+		},
+		{
+			"key": "apiUrl",
+			"value": "{{baseUrl}}/api/v1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Server Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": ["{{baseUrl}}"],
+							"path": [""]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/register",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/login",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Login Super Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"superadmin@gmail.com\",\n  \"password\": \"12345678\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/login",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Get Me (Profile)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/auth/me",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "me"]
+						},
+						"description": "Requires authentication (session cookie or access token)"
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"654321\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/change-password",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "change-password"]
+						},
+						"description": "Requires authentication"
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/auth/refresh-token",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "refresh-token"]
+						},
+						"description": "Requires refreshToken and better-auth.session_token cookies"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/auth/logout",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Requires authentication. Clears all auth cookies."
+					}
+				},
+				{
+					"name": "Verify Email (OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/verify-email",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "verify-email"]
+						},
+						"description": "Check server console for OTP in dev mode"
+					}
+				},
+				{
+					"name": "Forget Password (Send OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/forget-password",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "forget-password"]
+						},
+						"description": "Sends OTP to email. Check server console in dev mode."
+					}
+				},
+				{
+					"name": "Reset Password (with OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@gmail.com\",\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpass123\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/auth/reset-password",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "reset-password"]
+						}
+					}
+				},
+				{
+					"name": "Google Login",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/auth/login/google?redirect=/dashboard",
+							"host": ["{{apiUrl}}"],
+							"path": ["auth", "login", "google"],
+							"query": [
+								{
+									"key": "redirect",
+									"value": "/dashboard"
+								}
+							]
+						},
+						"description": "Redirects to Google OAuth. Best tested in browser."
+					}
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Create Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"password\": \"admin123\",\n  \"admin\": {\n    \"name\": \"Admin User\",\n    \"email\": \"admin@gmail.com\",\n    \"contactNumber\": \"01700000000\"\n  },\n  \"role\": \"ADMIN\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/users/create-admin",
+							"host": ["{{apiUrl}}"],
+							"path": ["users", "create-admin"]
+						},
+						"description": "Requires SUPER_ADMIN or ADMIN role"
+					}
+				}
+			]
+		},
+		{
+			"name": "Participants",
+			"item": [
+				{
+					"name": "Join Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventId\": \"paste-event-id-here\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/participants/join",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", "join"]
+						},
+						"description": "Requires authentication. Free PUBLIC events auto-approve, others stay PENDING."
+					}
+				},
+				{
+					"name": "Get My Participations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/participants/my-participations?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", "my-participations"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "APPROVED", "disabled": true }
+							]
+						},
+						"description": "Requires authentication. Optional filter by status: PENDING, APPROVED, REJECTED, BANNED."
+					}
+				},
+				{
+					"name": "Get Event Participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/participants/event/:eventId?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", "event", ":eventId"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "status", "value": "PENDING", "disabled": true }
+							],
+							"variable": [
+								{ "key": "eventId", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Get all participants for a specific event."
+					}
+				},
+				{
+					"name": "Approve Participant",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"APPROVED\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/participants/:participantId/status",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", ":participantId", "status"],
+							"variable": [
+								{ "key": "participantId", "value": "" }
+							]
+						},
+						"description": "Only event organizer can approve. Sets participant status to APPROVED."
+					}
+				},
+				{
+					"name": "Reject Participant",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"REJECTED\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/participants/:participantId/status",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", ":participantId", "status"],
+							"variable": [
+								{ "key": "participantId", "value": "" }
+							]
+						},
+						"description": "Only event organizer can reject."
+					}
+				},
+				{
+					"name": "Ban Participant",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"BANNED\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/participants/:participantId/status",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", ":participantId", "status"],
+							"variable": [
+								{ "key": "participantId", "value": "" }
+							]
+						},
+						"description": "Only event organizer can ban. Banned users cannot rejoin."
+					}
+				},
+				{
+					"name": "Cancel Participation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/participants/cancel/:eventId",
+							"host": ["{{apiUrl}}"],
+							"path": ["participants", "cancel", ":eventId"],
+							"variable": [
+								{ "key": "eventId", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Cancel your own participation (cannot cancel if banned)."
+					}
+				}
+			]
+		},
+		{
+			"name": "Payments (Stripe)",
+			"item": [
+				{
+					"name": "Create Checkout Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventId\": \"paste-event-id-here\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/payments/create-checkout-session",
+							"host": ["{{apiUrl}}"],
+							"path": ["payments", "create-checkout-session"]
+						},
+						"description": "Requires authentication. Creates a Stripe checkout session for a paid event. Returns sessionId and redirect URL."
+					}
+				},
+				{
+					"name": "Verify Payment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/payments/verify/:sessionId",
+							"host": ["{{apiUrl}}"],
+							"path": ["payments", "verify", ":sessionId"],
+							"variable": [
+								{ "key": "sessionId", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Verify payment status by Stripe session ID."
+					}
+				},
+				{
+					"name": "Get My Payments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/payments/my-payments?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["payments", "my-payments"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Requires authentication. Get all your payment records."
+					}
+				},
+				{
+					"name": "Get Event Payments (Organizer)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/payments/event/:eventId?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["payments", "event", ":eventId"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							],
+							"variable": [
+								{ "key": "eventId", "value": "" }
+							]
+						},
+						"description": "Only event organizer can view. Get all payments for a specific event."
+					}
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Tech Meetup Dhaka 2026\",\n  \"description\": \"A community meetup for developers in Dhaka to share knowledge and network.\",\n  \"date\": \"2026-04-15T00:00:00.000Z\",\n  \"time\": \"10:00 AM\",\n  \"venue\": \"Dhaka IT Park, Karwan Bazar\",\n  \"type\": \"PUBLIC\",\n  \"fee\": 0\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/events",
+							"host": ["{{apiUrl}}"],
+							"path": ["events"]
+						},
+						"description": "Requires authentication. Creates an event with the logged-in user as organizer."
+					}
+				},
+				{
+					"name": "Create Paid Private Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Exclusive Workshop on System Design\",\n  \"description\": \"An intensive hands-on workshop covering system design fundamentals and advanced patterns.\",\n  \"date\": \"2026-05-01T00:00:00.000Z\",\n  \"time\": \"02:00 PM\",\n  \"eventLink\": \"https://meet.google.com/abc-defg-hij\",\n  \"type\": \"PRIVATE\",\n  \"fee\": 500\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/events",
+							"host": ["{{apiUrl}}"],
+							"path": ["events"]
+						},
+						"description": "Requires authentication. Creates a paid private event."
+					}
+				},
+				{
+					"name": "Get All Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events?page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+							"host": ["{{apiUrl}}"],
+							"path": ["events"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" },
+								{ "key": "sortBy", "value": "createdAt" },
+								{ "key": "sortOrder", "value": "desc" }
+							]
+						},
+						"description": "Public. Supports pagination, sorting, search and filters."
+					}
+				},
+				{
+					"name": "Get All Events (with search)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events?searchTerm=tech&page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["events"],
+							"query": [
+								{ "key": "searchTerm", "value": "tech" },
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Search events by title, description, or venue."
+					}
+				},
+				{
+					"name": "Get All Events (with filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events?type=PUBLIC&isFeatured=true&minFee=0&maxFee=1000",
+							"host": ["{{apiUrl}}"],
+							"path": ["events"],
+							"query": [
+								{ "key": "type", "value": "PUBLIC" },
+								{ "key": "isFeatured", "value": "true" },
+								{ "key": "minFee", "value": "0" },
+								{ "key": "maxFee", "value": "1000" }
+							]
+						},
+						"description": "Filter by type, featured status, fee range, date range."
+					}
+				},
+				{
+					"name": "Get Event by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events/:id",
+							"host": ["{{apiUrl}}"],
+							"path": ["events", ":id"],
+							"variable": [
+								{ "key": "id", "value": "" }
+							]
+						},
+						"description": "Public. Returns event with organizer, participants, and reviews."
+					}
+				},
+				{
+					"name": "Get My Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events/my-events?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["events", "my-events"],
+							"query": [
+								{ "key": "page", "value": "1" },
+								{ "key": "limit", "value": "10" }
+							]
+						},
+						"description": "Requires authentication. Returns events organized by the logged-in user."
+					}
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Event Title\",\n  \"venue\": \"New Venue Location\",\n  \"fee\": 200\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/events/:id",
+							"host": ["{{apiUrl}}"],
+							"path": ["events", ":id"],
+							"variable": [
+								{ "key": "id", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Only organizer or admin can update."
+					}
+				},
+				{
+					"name": "Delete Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events/:id",
+							"host": ["{{apiUrl}}"],
+							"path": ["events", ":id"],
+							"variable": [
+								{ "key": "id", "value": "" }
+							]
+						},
+						"description": "Requires authentication. Only organizer or admin can delete."
+					}
+				},
+				{
+					"name": "Toggle Featured (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/events/:id/toggle-featured",
+							"host": ["{{apiUrl}}"],
+							"path": ["events", ":id", "toggle-featured"],
+							"variable": [
+								{ "key": "id", "value": "" }
+							]
+						},
+						"description": "Requires ADMIN or SUPER_ADMIN role. Toggles isFeatured flag."
+					}
+				}
+			]
+		},
+		{
+			"name": "Better Auth (Direct)",
+			"item": [
+				{
+					"name": "Sign Up (Better Auth)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@gmail.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/sign-up/email",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "sign-up", "email"]
+						},
+						"description": "Direct Better Auth sign-up endpoint"
+					}
+				},
+				{
+					"name": "Sign In (Better Auth)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/sign-in/email",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "sign-in", "email"]
+						},
+						"description": "Direct Better Auth sign-in endpoint"
+					}
+				},
+				{
+					"name": "Get Session (Better Auth)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/get-session",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "get-session"]
+						},
+						"description": "Requires better-auth.session_token cookie"
+					}
+				}
+			]
+		}
+	]
+}
