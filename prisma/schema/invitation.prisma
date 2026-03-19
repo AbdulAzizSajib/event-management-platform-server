@@ -1,0 +1,20 @@
+model Invitation {
+    id     String           @id @default(uuid())
+    status InvitationStatus @default(PENDING)
+
+    eventId String
+    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+    inviterId String
+    inviter   User   @relation("InviterRelation", fields: [inviterId], references: [id], onDelete: Cascade)
+
+    inviteeId String
+    invitee   User   @relation("InviteeRelation", fields: [inviteeId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // One user can only be invited once per event
+    @@unique([eventId, inviteeId])
+    @@map("invitations")
+}

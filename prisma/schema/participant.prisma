@@ -1,0 +1,17 @@
+model Participant {
+    id     String            @id @default(uuid())
+    status ParticipantStatus @default(PENDING)
+
+    eventId String
+    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    joinedAt  DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // One user can only have one participation record per event
+    @@unique([eventId, userId])
+    @@map("participants")
+}

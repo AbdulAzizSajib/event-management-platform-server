@@ -1,0 +1,18 @@
+model Review {
+    id      String @id @default(uuid())
+    rating  Int // 1 to 5
+    comment String
+
+    eventId String
+    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // One user can only review an event once
+    @@unique([eventId, userId])
+    @@map("reviews")
+}

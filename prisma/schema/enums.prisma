@@ -1,0 +1,46 @@
+enum Role {
+    SUPER_ADMIN
+    ADMIN
+    USER
+}
+
+enum UserStatus {
+    BLOCKED
+    DELETED
+    ACTIVE
+}
+
+enum Gender {
+    MALE
+    FEMALE
+}
+
+enum EventType {
+    PUBLIC
+    PRIVATE
+}
+
+enum ParticipantStatus {
+    PENDING // Payment done / request sent — waiting for host approval
+    APPROVED // Host approved
+    REJECTED // Host rejected
+    BANNED // Host banned this participant
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCESS
+    FAILED
+    CANCELLED
+}
+
+enum PaymentMethod {
+    SSLCOMMERZ
+    SHURJOPAY
+}
+
+enum InvitationStatus {
+    PENDING
+    ACCEPTED
+    DECLINED
+}

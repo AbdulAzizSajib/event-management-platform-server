@@ -1,0 +1,19 @@
+model Payment {
+    id            String        @id @default(uuid())
+    amount        Decimal       @db.Decimal(10, 2)
+    method        PaymentMethod
+    status        PaymentStatus @default(PENDING)
+    transactionId String?       @unique // Gateway transaction ID
+    gatewayData   Json? // Raw response from gateway (optional)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    eventId String
+    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("payments")
+}
