@@ -7,6 +7,8 @@ export interface ICreateEvent {
   eventLink?: string;
   type?: "PUBLIC" | "PRIVATE";
   fee?: number;
+  maxAttendees?: number;
+  categoryId?: string;
 }
 
 export interface IUpdateEvent {
@@ -18,4 +20,6 @@ export interface IUpdateEvent {
   eventLink?: string | null;
   type?: "PUBLIC" | "PRIVATE";
   fee?: number;
+  maxAttendees?: number | null;
+  categoryId?: string;
 }

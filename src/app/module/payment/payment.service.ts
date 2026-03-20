@@ -12,6 +12,7 @@ import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
 import { envVars } from "../../config/env";
 import { IQueryParams, IQueryResult } from "../../interfaces/query.interface";
+import { sendEmail } from "../../utils/email";
 
 const createCheckoutSession = async (
   userId: string,
@@ -201,6 +202,32 @@ const handleStripeWebhookEvent = async (event: Stripe.Event) => {
           }
         }
       });
+
+      // Send payment receipt email (non-blocking)
+      if (session.payment_status === "paid") {
+        try {
+          const user = await prisma.user.findUnique({ where: { id: userId } });
+          if (user) {
+            await sendEmail({
+              to: user.email,
+              subject: `Payment Confirmed — ${eventData.title}`,
+              templateName: "invoice",
+              templateData: {
+                userName: user.name,
+                paymentId: paymentId,
+                transactionId: session.id || "",
+                paymentDate: new Date().toLocaleDateString(),
+                eventTitle: eventData.title,
+                eventDate: new Date(eventData.date).toLocaleDateString(),
+                eventVenue: eventData.venue || null,
+                amount: Number(eventData.fee).toFixed(2),
+              },
+            });
+          }
+        } catch (emailError) {
+          console.error("Failed to send payment receipt email:", emailError);
+        }
+      }
 
       console.log(
         `✅ Payment ${session.payment_status} for event ${eventId}`,

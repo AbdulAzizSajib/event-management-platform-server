@@ -71,6 +71,13 @@ const loginUser = async (payload: ILoginUserPayload) => {
     },
   });
 
+  if (!data.user.emailVerified) {
+    throw new AppError(
+      status.FORBIDDEN,
+      "Please verify your email before logging in. Check your inbox for the verification code.",
+    );
+  }
+
   if (data.user.status === UserStatus.BLOCKED) {
     throw new AppError(
       status.FORBIDDEN,
@@ -356,6 +363,25 @@ const resetPassword = async (
   });
 };
 
+const resendOTP = async (email: string, type: "email-verification" | "forget-password") => {
+  const user = await prisma.user.findUnique({ where: { email } });
+
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, "User not found");
+  }
+
+  if (type === "email-verification" && user.emailVerified) {
+    throw new AppError(status.BAD_REQUEST, "Email is already verified");
+  }
+
+  await auth.api.sendVerificationOTP({
+    body: {
+      email,
+      type,
+    },
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const googleLoginSuccess = async (session: Record<string, any>) => {
   const accessToken = tokenUtils.getAccessToken({
@@ -394,5 +420,6 @@ export const authService = {
   verifyEmail,
   forgetPassword,
   resetPassword,
+  resendOTP,
   googleLoginSuccess,
 };

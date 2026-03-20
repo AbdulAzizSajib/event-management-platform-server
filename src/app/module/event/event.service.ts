@@ -1,33 +1,36 @@
 import status from "http-status";
-import { Event, Prisma } from "../../../generated/prisma/client";
+import { Prisma } from "../../../generated/prisma/client";
 import { Role } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { ICreateEvent, IUpdateEvent } from "./event.interface";
-import { IQueryParams, IQueryResult } from "../../interfaces/query.interface";
+import { IQueryParams } from "../../interfaces/query.interface";
 
 const EVENT_SEARCHABLE_FIELDS = ["title", "description", "venue"];
-const EVENT_FILTERABLE_FIELDS = ["type", "isFeatured", "organizerId"];
+const EVENT_FILTERABLE_FIELDS = ["type", "isFeatured", "organizerId", "categoryId"];
 
 const createEvent = async (
   organizerId: string,
   payload: ICreateEvent,
-): Promise<Event> => {
+) => {
+  const data: Prisma.EventUncheckedCreateInput = {
+    title: payload.title,
+    description: payload.description,
+    date: new Date(payload.date),
+    time: payload.time,
+    venue: payload.venue ?? null,
+    eventLink: payload.eventLink ?? null,
+    organizerId,
+    categoryId: payload.categoryId ?? null,
+  };
+  if (payload.type) data.type = payload.type;
+  if (payload.fee !== undefined) data.fee = payload.fee;
+  if (payload.maxAttendees !== undefined) data.maxAttendees = payload.maxAttendees;
+
   const event = await prisma.event.create({
-    data: {
-      title: payload.title,
-      description: payload.description,
-      date: new Date(payload.date),
-      time: payload.time,
-      venue: payload.venue ?? null,
-      eventLink: payload.eventLink ?? null,
-      ...(payload.type && { type: payload.type }),
-      ...(payload.fee !== undefined && { fee: payload.fee }),
-      organizer: {
-        connect: { id: organizerId },
-      },
-    },
+    data,
     include: {
+      category: true,
       organizer: {
         select: {
           id: true,
@@ -44,7 +47,7 @@ const createEvent = async (
 
 const getAllEvents = async (
   query: IQueryParams,
-): Promise<IQueryResult<Event>> => {
+) => {
   const {
     searchTerm,
     page = "1",
@@ -107,6 +110,7 @@ const getAllEvents = async (
     prisma.event.findMany({
       where,
       include: {
+        category: true,
         organizer: {
           select: {
             id: true,
@@ -140,10 +144,11 @@ const getAllEvents = async (
   };
 };
 
-const getEventById = async (eventId: string): Promise<Event> => {
+const getEventById = async (eventId: string) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
     include: {
+      category: true,
       organizer: {
         select: {
           id: true,
@@ -194,7 +199,7 @@ const getEventById = async (eventId: string): Promise<Event> => {
 const getMyEvents = async (
   organizerId: string,
   query: IQueryParams,
-): Promise<IQueryResult<Event>> => {
+) => {
   const {
     page = "1",
     limit = "10",
@@ -242,7 +247,7 @@ const updateEvent = async (
   userId: string,
   userRole: Role,
   payload: IUpdateEvent,
-): Promise<Event> => {
+) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
   });
@@ -285,7 +290,7 @@ const deleteEvent = async (
   eventId: string,
   userId: string,
   userRole: Role,
-): Promise<Event> => {
+) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
   });
@@ -308,7 +313,7 @@ const deleteEvent = async (
   return deletedEvent;
 };
 
-const toggleFeatured = async (eventId: string): Promise<Event> => {
+const toggleFeatured = async (eventId: string) => {
   const event = await prisma.event.findUnique({
     where: { id: eventId },
   });

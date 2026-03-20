@@ -7,6 +7,8 @@ import {
 import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { IQueryParams, IQueryResult } from "../../interfaces/query.interface";
+import { sendEmail } from "../../utils/email";
+import { envVars } from "../../config/env";
 
 const sendInvitation = async (
   inviterId: string,
@@ -86,6 +88,7 @@ const sendInvitation = async (
           fee: true,
           date: true,
           time: true,
+          venue: true,
         },
       },
       invitee: {
@@ -106,6 +109,27 @@ const sendInvitation = async (
       },
     },
   });
+
+  // Send invitation email to invitee (non-blocking)
+  try {
+    await sendEmail({
+      to: invitee.email,
+      subject: `You're invited to "${invitation.event.title}"`,
+      templateName: "invitation",
+      templateData: {
+        inviteeName: invitee.name,
+        inviterName: invitation.inviter.name,
+        eventTitle: invitation.event.title,
+        eventDate: new Date(invitation.event.date).toLocaleDateString(),
+        eventTime: invitation.event.time,
+        eventVenue: invitation.event.venue || null,
+        eventFee: invitation.event.fee,
+        dashboardUrl: `${envVars.FRONTEND_URL}/dashboard/invitations`,
+      },
+    });
+  } catch (error) {
+    console.error(`Failed to send invitation email to ${invitee.email}:`, error);
+  }
 
   return invitation;
 };

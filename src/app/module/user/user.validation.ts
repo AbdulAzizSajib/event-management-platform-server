@@ -24,6 +24,21 @@ export const createAdminZodSchema = z.object({
   ),
 });
 
+export const updateProfileZodSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters")
+    .optional(),
+  phone: z
+    .string()
+    .min(11, "Phone must be at least 11 characters")
+    .max(14, "Phone must be at most 14 characters")
+    .optional(),
+  image: z.string().url("Image must be a valid URL").optional(),
+});
+
 export const UserValidation = {
   createAdminZodSchema,
+  updateProfileZodSchema,
 };

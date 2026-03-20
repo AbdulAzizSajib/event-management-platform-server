@@ -1,9 +1,10 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { emailOTP } from "better-auth/plugins";
+import { bearer, emailOTP } from "better-auth/plugins";
 import { prisma } from "./prisma";
 import { envVars } from "../config/env";
 import { Role, UserStatus } from "../../generated/prisma/enums";
+import { sendEmail } from "../utils/email";
 
 export const auth = betterAuth({
   baseURL: envVars.BETTER_AUTH_URL,
@@ -13,11 +14,46 @@ export const auth = betterAuth({
   }),
 
   plugins: [
+    bearer(),
     emailOTP({
-      sendVerificationOTP: async ({ email, otp }) => {
-        // TODO: implement email sending (e.g., nodemailer, resend)
-        console.log(`[DEV] OTP for ${email}: ${otp}`);
+      overrideDefaultEmailVerification: true,
+      async sendVerificationOTP({ email, otp, type }) {
+        if (type === "email-verification") {
+          const user = await prisma.user.findUnique({ where: { email } });
+
+          if (!user) {
+            console.error(`User with email ${email} not found.`);
+            return;
+          }
+
+          if (user.role === Role.SUPER_ADMIN) {
+            console.log(`Super admin ${email} — skipping OTP.`);
+            return;
+          }
+
+          if (!user.emailVerified) {
+            sendEmail({
+              to: email,
+              subject: "Verify Your Email - Event Management Platform",
+              templateName: "otp",
+              templateData: { name: user.name, otp },
+            });
+          }
+        } else if (type === "forget-password") {
+          const user = await prisma.user.findUnique({ where: { email } });
+
+          if (user) {
+            sendEmail({
+              to: email,
+              subject: "Password Reset OTP - Event Management Platform",
+              templateName: "otp",
+              templateData: { name: user.name, otp },
+            });
+          }
+        }
       },
+      expiresIn: 2 * 60, // 2 minutes
+      otpLength: 6,
     }),
   ],
 
@@ -98,6 +134,15 @@ export const auth = betterAuth({
     process.env.BETTER_AUTH_URL || "http://localhost:5000",
     envVars.FRONTEND_URL,
   ],
+
+  session: {
+    expiresIn: 60 * 60 * 60 * 24, // 1 day in seconds
+    updateAge: 60 * 60 * 60 * 24, // 1 day in seconds
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60 * 60 * 24, // 1 day in seconds
+    },
+  },
 
   // Advance
   advanced: {

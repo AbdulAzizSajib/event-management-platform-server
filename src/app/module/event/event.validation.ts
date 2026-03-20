@@ -16,6 +16,8 @@ export const createEventZodSchema = z.object({
   eventLink: z.string().url("Event link must be a valid URL").optional(),
   type: z.enum(["PUBLIC", "PRIVATE"]).optional(),
   fee: z.number().min(0, "Fee cannot be negative").optional(),
+  maxAttendees: z.number().int().min(1, "Max attendees must be at least 1").optional(),
+  categoryId: z.string("Category ID is required").uuid("Invalid category ID"),
 });
 
 export const updateEventZodSchema = z.object({
@@ -34,6 +36,8 @@ export const updateEventZodSchema = z.object({
   eventLink: z.string().url("Event link must be a valid URL").nullable().optional(),
   type: z.enum(["PUBLIC", "PRIVATE"]).optional(),
   fee: z.number().min(0, "Fee cannot be negative").optional(),
+  maxAttendees: z.number().int().min(1, "Max attendees must be at least 1").nullable().optional(),
+  categoryId: z.string().uuid("Invalid category ID").optional(),
 });
 
 export const EventValidation = {

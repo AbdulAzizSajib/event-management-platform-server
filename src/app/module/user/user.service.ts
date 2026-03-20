@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// import status from "http-status";
-// import { Role } from "../../../generated/prisma/client";
-// import AppError from "../../errorHelpers/AppError";
+import status from "http-status";
+import { User } from "../../../generated/prisma/client";
+import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
 import { ICreateAdmin } from "./user.interface";
 
 const createAdmin = async (payload: ICreateAdmin) => {
-  // Step 1: Check if user already exists
   const userExists = await prisma.user.findUnique({
     where: {
       email: payload.admin.email,
@@ -15,7 +14,7 @@ const createAdmin = async (payload: ICreateAdmin) => {
   });
 
   if (userExists) {
-    throw new Error("User with this email already exists");
+    throw new AppError(status.CONFLICT, "User with this email already exists");
   }
 
   const { admin, role, password } = payload;
@@ -28,7 +27,6 @@ const createAdmin = async (payload: ICreateAdmin) => {
     },
   });
 
-  // Step 3: Create admin profile in transaction
   try {
     const adminData = await prisma.admin.create({
       data: {
@@ -47,6 +45,132 @@ const createAdmin = async (payload: ICreateAdmin) => {
   }
 };
 
+const updateProfile = async (
+  userId: string,
+  payload: { name?: string; phone?: string; image?: string },
+): Promise<User> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, "User not found");
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: payload,
+  });
+
+  return updatedUser;
+};
+
+const getMyDashboard = async (userId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, "User not found");
+  }
+
+  const [
+    organizedEvents,
+    participations,
+    pendingInvitations,
+    myReviews,
+    organizedCount,
+    participationCount,
+    invitationCount,
+    reviewCount,
+  ] = await Promise.all([
+    prisma.event.findMany({
+      where: { organizerId: userId },
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        date: true,
+        type: true,
+        fee: true,
+        isFeatured: true,
+        _count: {
+          select: { participants: true, reviews: true },
+        },
+      },
+    }),
+    prisma.participant.findMany({
+      where: { userId },
+      take: 5,
+      orderBy: { joinedAt: "desc" },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+            date: true,
+            type: true,
+            venue: true,
+          },
+        },
+      },
+    }),
+    prisma.invitation.findMany({
+      where: { inviteeId: userId, status: "PENDING" },
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+            date: true,
+          },
+        },
+        inviter: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+    }),
+    prisma.review.findMany({
+      where: { userId },
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    }),
+    prisma.event.count({ where: { organizerId: userId } }),
+    prisma.participant.count({ where: { userId } }),
+    prisma.invitation.count({ where: { inviteeId: userId, status: "PENDING" } }),
+    prisma.review.count({ where: { userId } }),
+  ]);
+
+  return {
+    counts: {
+      organizedEvents: organizedCount,
+      participations: participationCount,
+      pendingInvitations: invitationCount,
+      reviews: reviewCount,
+    },
+    recentOrganizedEvents: organizedEvents,
+    recentParticipations: participations,
+    pendingInvitations,
+    recentReviews: myReviews,
+  };
+};
+
 export const userService = {
   createAdmin,
+  updateProfile,
+  getMyDashboard,
 };
