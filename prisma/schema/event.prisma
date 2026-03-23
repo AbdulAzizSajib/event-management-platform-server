@@ -25,6 +25,7 @@ model Event {
     payments     Payment[]
     invitations  Invitation[]
     reviews      Review[]
+    savedBy      SavedEvent[]
 
     @@map("events")
 }

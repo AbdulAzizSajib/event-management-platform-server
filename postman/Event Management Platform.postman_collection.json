@@ -988,6 +988,104 @@
 			]
 		},
 		{
+			"name": "Saved Events",
+			"item": [
+				{
+					"name": "Save Event",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"eventId\": \"event-id-here\"\n}"
+						},
+						"url": {
+							"raw": "{{apiUrl}}/saved-events",
+							"host": ["{{apiUrl}}"],
+							"path": ["saved-events"]
+						},
+						"description": "Requires authentication. Save/bookmark an event."
+					}
+				},
+				{
+					"name": "Get My Saved Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/saved-events?page=1&limit=10",
+							"host": ["{{apiUrl}}"],
+							"path": ["saved-events"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "sortBy",
+									"value": "savedAt",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "desc",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Requires authentication. Returns all saved events with event details, organizer, and category."
+					}
+				},
+				{
+					"name": "Check Save Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/saved-events/status/:eventId",
+							"host": ["{{apiUrl}}"],
+							"path": ["saved-events", "status", ":eventId"],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "event-id-here"
+								}
+							]
+						},
+						"description": "Requires authentication. Returns { isSaved: true/false }. Use to show filled/empty heart icon."
+					}
+				},
+				{
+					"name": "Unsave Event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/saved-events/:eventId",
+							"host": ["{{apiUrl}}"],
+							"path": ["saved-events", ":eventId"],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "event-id-here"
+								}
+							]
+						},
+						"description": "Requires authentication. Remove event from saved list."
+					}
+				}
+			]
+		},
+		{
 			"name": "Admin",
 			"item": [
 				{

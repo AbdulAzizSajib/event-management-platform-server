@@ -74,16 +74,62 @@ const getMyDashboard = async (userId: string) => {
     throw new AppError(status.NOT_FOUND, "User not found");
   }
 
+  const now = new Date();
+
   const [
-    organizedEvents,
-    participations,
-    pendingInvitations,
-    myReviews,
+    // Counts
     organizedCount,
     participationCount,
-    invitationCount,
+    pendingInvitations,
     reviewCount,
+    savedCount,
+    totalSpent,
+
+    // Participation status breakdown
+    pendingParticipations,
+    approvedParticipations,
+    rejectedParticipations,
+
+    // Upcoming events (organized by me)
+    upcomingOrganized,
+
+    // Upcoming events (participating in)
+    upcomingParticipating,
+
+    // Recent data
+    recentOrganizedEvents,
+    recentParticipations,
+    recentInvitations,
+    recentReviews,
+    recentSavedEvents,
   ] = await Promise.all([
+    // Counts
+    prisma.event.count({ where: { organizerId: userId } }),
+    prisma.participant.count({ where: { userId } }),
+    prisma.invitation.count({ where: { inviteeId: userId, status: "PENDING" } }),
+    prisma.review.count({ where: { userId } }),
+    prisma.savedEvent.count({ where: { userId } }),
+    prisma.payment.aggregate({
+      _sum: { amount: true },
+      where: { userId, status: "SUCCESS" },
+    }),
+
+    // Participation status breakdown
+    prisma.participant.count({ where: { userId, status: "PENDING" } }),
+    prisma.participant.count({ where: { userId, status: "APPROVED" } }),
+    prisma.participant.count({ where: { userId, status: "REJECTED" } }),
+
+    // Upcoming events I organized
+    prisma.event.count({
+      where: { organizerId: userId, date: { gte: now } },
+    }),
+
+    // Upcoming events I'm participating in
+    prisma.participant.count({
+      where: { userId, status: "APPROVED", event: { date: { gte: now } } },
+    }),
+
+    // Recent organized events
     prisma.event.findMany({
       where: { organizerId: userId },
       take: 5,
@@ -100,6 +146,8 @@ const getMyDashboard = async (userId: string) => {
         },
       },
     }),
+
+    // Recent participations
     prisma.participant.findMany({
       where: { userId },
       take: 5,
@@ -116,56 +164,77 @@ const getMyDashboard = async (userId: string) => {
         },
       },
     }),
+
+    // Pending invitations
     prisma.invitation.findMany({
       where: { inviteeId: userId, status: "PENDING" },
       take: 5,
       orderBy: { createdAt: "desc" },
       include: {
         event: {
-          select: {
-            id: true,
-            title: true,
-            date: true,
-          },
+          select: { id: true, title: true, date: true },
         },
         inviter: {
-          select: {
-            id: true,
-            name: true,
-          },
+          select: { id: true, name: true },
         },
       },
     }),
+
+    // Recent reviews
     prisma.review.findMany({
       where: { userId },
       take: 5,
       orderBy: { createdAt: "desc" },
       include: {
         event: {
+          select: { id: true, title: true },
+        },
+      },
+    }),
+
+    // Recent saved events
+    prisma.savedEvent.findMany({
+      where: { userId },
+      take: 5,
+      orderBy: { savedAt: "desc" },
+      include: {
+        event: {
           select: {
             id: true,
             title: true,
+            date: true,
+            type: true,
+            fee: true,
+            venue: true,
           },
         },
       },
     }),
-    prisma.event.count({ where: { organizerId: userId } }),
-    prisma.participant.count({ where: { userId } }),
-    prisma.invitation.count({ where: { inviteeId: userId, status: "PENDING" } }),
-    prisma.review.count({ where: { userId } }),
   ]);
 
   return {
     counts: {
       organizedEvents: organizedCount,
       participations: participationCount,
-      pendingInvitations: invitationCount,
+      pendingInvitations,
       reviews: reviewCount,
+      savedEvents: savedCount,
+      totalSpent: Number(totalSpent._sum.amount || 0),
     },
-    recentOrganizedEvents: organizedEvents,
-    recentParticipations: participations,
-    pendingInvitations,
-    recentReviews: myReviews,
+    upcoming: {
+      organizedEvents: upcomingOrganized,
+      participatingEvents: upcomingParticipating,
+    },
+    participationBreakdown: {
+      pending: pendingParticipations,
+      approved: approvedParticipations,
+      rejected: rejectedParticipations,
+    },
+    recentOrganizedEvents,
+    recentParticipations,
+    pendingInvitations: recentInvitations,
+    recentReviews,
+    recentSavedEvents,
   };
 };
 

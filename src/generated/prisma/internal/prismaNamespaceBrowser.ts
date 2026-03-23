@@ -61,7 +61,8 @@ export const ModelName = {
   Invitation: 'Invitation',
   Participant: 'Participant',
   Payment: 'Payment',
-  Review: 'Review'
+  Review: 'Review',
+  SavedEvent: 'SavedEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -247,6 +248,16 @@ export const ReviewScalarFieldEnum = {
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const SavedEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  savedAt: 'savedAt'
+} as const
+
+export type SavedEventScalarFieldEnum = (typeof SavedEventScalarFieldEnum)[keyof typeof SavedEventScalarFieldEnum]
 
 
 export const SortOrder = {

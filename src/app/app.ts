@@ -14,6 +14,7 @@ import invitationRouter from "./module/invitation/invitation.router";
 import reviewRouter from "./module/review/review.router";
 import adminRouter from "./module/admin/admin.router";
 import categoryRouter from "./module/category/category.router";
+import savedEventRouter from "./module/savedEvent/savedEvent.router";
 import { paymentController } from "./module/payment/payment.controller";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { notFoundMiddleware } from "./middleware/notFound";
@@ -68,6 +69,7 @@ app.use("/api/v1/invitations", invitationRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/saved-events", savedEventRouter);
 
 app.use(globalErrorHandler);
 app.use(notFoundMiddleware);

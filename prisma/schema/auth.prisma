@@ -27,6 +27,7 @@ model User {
   invitations     Invitation[]  @relation("InviterRelation")
   invitedTo       Invitation[]  @relation("InviteeRelation")
   reviews         Review[]
+  savedEvents     SavedEvent[]
 
   @@unique([email])
   @@map("user")

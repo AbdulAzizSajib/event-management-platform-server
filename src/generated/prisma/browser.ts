@@ -72,3 +72,8 @@ export type Payment = Prisma.PaymentModel
  * 
  */
 export type Review = Prisma.ReviewModel
+/**
+ * Model SavedEvent
+ * 
+ */
+export type SavedEvent = Prisma.SavedEventModel

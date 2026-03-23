@@ -255,6 +255,7 @@ export type UserWhereInput = {
   invitations?: Prisma.InvitationListRelationFilter
   invitedTo?: Prisma.InvitationListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  savedEvents?: Prisma.SavedEventListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -280,6 +281,7 @@ export type UserOrderByWithRelationInput = {
   invitations?: Prisma.InvitationOrderByRelationAggregateInput
   invitedTo?: Prisma.InvitationOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
+  savedEvents?: Prisma.SavedEventOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -308,6 +310,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   invitations?: Prisma.InvitationListRelationFilter
   invitedTo?: Prisma.InvitationListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
+  savedEvents?: Prisma.SavedEventListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -371,6 +374,7 @@ export type UserCreateInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -396,6 +400,7 @@ export type UserUncheckedCreateInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -421,6 +426,7 @@ export type UserUpdateInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -446,6 +452,7 @@ export type UserUncheckedUpdateInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -683,6 +690,20 @@ export type UserUpdateOneRequiredWithoutReviewsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReviewsInput, Prisma.UserUpdateWithoutReviewsInput>, Prisma.UserUncheckedUpdateWithoutReviewsInput>
 }
 
+export type UserCreateNestedOneWithoutSavedEventsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedEventsInput, Prisma.UserUncheckedCreateWithoutSavedEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSavedEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSavedEventsInput, Prisma.UserUncheckedCreateWithoutSavedEventsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSavedEventsInput
+  upsert?: Prisma.UserUpsertWithoutSavedEventsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSavedEventsInput, Prisma.UserUpdateWithoutSavedEventsInput>, Prisma.UserUncheckedUpdateWithoutSavedEventsInput>
+}
+
 export type UserCreateWithoutAdminInput = {
   id: string
   name: string
@@ -705,6 +726,7 @@ export type UserCreateWithoutAdminInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAdminInput = {
@@ -729,6 +751,7 @@ export type UserUncheckedCreateWithoutAdminInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAdminInput = {
@@ -769,6 +792,7 @@ export type UserUpdateWithoutAdminInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAdminInput = {
@@ -793,6 +817,7 @@ export type UserUncheckedUpdateWithoutAdminInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -817,6 +842,7 @@ export type UserCreateWithoutSessionsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -841,6 +867,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -881,6 +908,7 @@ export type UserUpdateWithoutSessionsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -905,6 +933,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -929,6 +958,7 @@ export type UserCreateWithoutAccountsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -953,6 +983,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -993,6 +1024,7 @@ export type UserUpdateWithoutAccountsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -1017,6 +1049,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrganizedEventsInput = {
@@ -1041,6 +1074,7 @@ export type UserCreateWithoutOrganizedEventsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrganizedEventsInput = {
@@ -1065,6 +1099,7 @@ export type UserUncheckedCreateWithoutOrganizedEventsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrganizedEventsInput = {
@@ -1105,6 +1140,7 @@ export type UserUpdateWithoutOrganizedEventsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrganizedEventsInput = {
@@ -1129,6 +1165,7 @@ export type UserUncheckedUpdateWithoutOrganizedEventsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutInvitationsInput = {
@@ -1153,6 +1190,7 @@ export type UserCreateWithoutInvitationsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitationsInput = {
@@ -1177,6 +1215,7 @@ export type UserUncheckedCreateWithoutInvitationsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitationsInput = {
@@ -1206,6 +1245,7 @@ export type UserCreateWithoutInvitedToInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutInvitedToInput = {
@@ -1230,6 +1270,7 @@ export type UserUncheckedCreateWithoutInvitedToInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutInvitedToInput = {
@@ -1270,6 +1311,7 @@ export type UserUpdateWithoutInvitationsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitationsInput = {
@@ -1294,6 +1336,7 @@ export type UserUncheckedUpdateWithoutInvitationsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutInvitedToInput = {
@@ -1329,6 +1372,7 @@ export type UserUpdateWithoutInvitedToInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutInvitedToInput = {
@@ -1353,6 +1397,7 @@ export type UserUncheckedUpdateWithoutInvitedToInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutParticipantsInput = {
@@ -1377,6 +1422,7 @@ export type UserCreateWithoutParticipantsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutParticipantsInput = {
@@ -1401,6 +1447,7 @@ export type UserUncheckedCreateWithoutParticipantsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutParticipantsInput = {
@@ -1441,6 +1488,7 @@ export type UserUpdateWithoutParticipantsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutParticipantsInput = {
@@ -1465,6 +1513,7 @@ export type UserUncheckedUpdateWithoutParticipantsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPaymentsInput = {
@@ -1489,6 +1538,7 @@ export type UserCreateWithoutPaymentsInput = {
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPaymentsInput = {
@@ -1513,6 +1563,7 @@ export type UserUncheckedCreateWithoutPaymentsInput = {
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPaymentsInput = {
@@ -1553,6 +1604,7 @@ export type UserUpdateWithoutPaymentsInput = {
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPaymentsInput = {
@@ -1577,6 +1629,7 @@ export type UserUncheckedUpdateWithoutPaymentsInput = {
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutReviewsInput = {
@@ -1601,6 +1654,7 @@ export type UserCreateWithoutReviewsInput = {
   payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
+  savedEvents?: Prisma.SavedEventCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -1625,6 +1679,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
   invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
   invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
+  savedEvents?: Prisma.SavedEventUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -1665,6 +1720,7 @@ export type UserUpdateWithoutReviewsInput = {
   payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
+  savedEvents?: Prisma.SavedEventUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -1689,6 +1745,123 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
   invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
   invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
+  savedEvents?: Prisma.SavedEventUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSavedEventsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  phone?: string | null
+  status?: $Enums.UserStatus
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  admin?: Prisma.AdminCreateNestedOneWithoutUserInput
+  organizedEvents?: Prisma.EventCreateNestedManyWithoutOrganizerInput
+  participants?: Prisma.ParticipantCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutInviterInput
+  invitedTo?: Prisma.InvitationCreateNestedManyWithoutInviteeInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSavedEventsInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: $Enums.Role
+  phone?: string | null
+  status?: $Enums.UserStatus
+  needPasswordChange?: boolean
+  isDeleted?: boolean
+  deletedAt?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  admin?: Prisma.AdminUncheckedCreateNestedOneWithoutUserInput
+  organizedEvents?: Prisma.EventUncheckedCreateNestedManyWithoutOrganizerInput
+  participants?: Prisma.ParticipantUncheckedCreateNestedManyWithoutUserInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutUserInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviterInput
+  invitedTo?: Prisma.InvitationUncheckedCreateNestedManyWithoutInviteeInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSavedEventsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedEventsInput, Prisma.UserUncheckedCreateWithoutSavedEventsInput>
+}
+
+export type UserUpsertWithoutSavedEventsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSavedEventsInput, Prisma.UserUncheckedUpdateWithoutSavedEventsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSavedEventsInput, Prisma.UserUncheckedCreateWithoutSavedEventsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSavedEventsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSavedEventsInput, Prisma.UserUncheckedUpdateWithoutSavedEventsInput>
+}
+
+export type UserUpdateWithoutSavedEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  admin?: Prisma.AdminUpdateOneWithoutUserNestedInput
+  organizedEvents?: Prisma.EventUpdateManyWithoutOrganizerNestedInput
+  participants?: Prisma.ParticipantUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutInviterNestedInput
+  invitedTo?: Prisma.InvitationUpdateManyWithoutInviteeNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSavedEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  needPasswordChange?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  admin?: Prisma.AdminUncheckedUpdateOneWithoutUserNestedInput
+  organizedEvents?: Prisma.EventUncheckedUpdateManyWithoutOrganizerNestedInput
+  participants?: Prisma.ParticipantUncheckedUpdateManyWithoutUserNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutUserNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutInviterNestedInput
+  invitedTo?: Prisma.InvitationUncheckedUpdateManyWithoutInviteeNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1705,6 +1878,7 @@ export type UserCountOutputType = {
   invitations: number
   invitedTo: number
   reviews: number
+  savedEvents: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1716,6 +1890,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
   invitedTo?: boolean | UserCountOutputTypeCountInvitedToArgs
   reviews?: boolean | UserCountOutputTypeCountReviewsArgs
+  savedEvents?: boolean | UserCountOutputTypeCountSavedEventsArgs
 }
 
 /**
@@ -1784,6 +1959,13 @@ export type UserCountOutputTypeCountReviewsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.ReviewWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSavedEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SavedEventWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1808,6 +1990,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
   invitedTo?: boolean | Prisma.User$invitedToArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  savedEvents?: boolean | Prisma.User$savedEventsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1870,6 +2053,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   invitations?: boolean | Prisma.User$invitationsArgs<ExtArgs>
   invitedTo?: boolean | Prisma.User$invitedToArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
+  savedEvents?: boolean | Prisma.User$savedEventsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1887,6 +2071,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     invitations: Prisma.$InvitationPayload<ExtArgs>[]
     invitedTo: Prisma.$InvitationPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
+    savedEvents: Prisma.$SavedEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2305,6 +2490,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   invitations<T extends Prisma.User$invitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invitedTo<T extends Prisma.User$invitedToArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$invitedToArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  savedEvents<T extends Prisma.User$savedEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$savedEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SavedEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2948,6 +3134,30 @@ export type User$reviewsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * User.savedEvents
+ */
+export type User$savedEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SavedEvent
+   */
+  select?: Prisma.SavedEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SavedEvent
+   */
+  omit?: Prisma.SavedEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SavedEventInclude<ExtArgs> | null
+  where?: Prisma.SavedEventWhereInput
+  orderBy?: Prisma.SavedEventOrderByWithRelationInput | Prisma.SavedEventOrderByWithRelationInput[]
+  cursor?: Prisma.SavedEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SavedEventScalarFieldEnum | Prisma.SavedEventScalarFieldEnum[]
 }
 
 /**

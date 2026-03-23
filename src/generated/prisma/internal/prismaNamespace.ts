@@ -394,7 +394,8 @@ export const ModelName = {
   Invitation: 'Invitation',
   Participant: 'Participant',
   Payment: 'Payment',
-  Review: 'Review'
+  Review: 'Review',
+  SavedEvent: 'SavedEvent'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "user" | "session" | "account" | "verification" | "category" | "event" | "invitation" | "participant" | "payment" | "review"
+    modelProps: "admin" | "user" | "session" | "account" | "verification" | "category" | "event" | "invitation" | "participant" | "payment" | "review" | "savedEvent"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SavedEvent: {
+      payload: Prisma.$SavedEventPayload<ExtArgs>
+      fields: Prisma.SavedEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SavedEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SavedEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        findFirst: {
+          args: Prisma.SavedEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SavedEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        findMany: {
+          args: Prisma.SavedEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+        }
+        create: {
+          args: Prisma.SavedEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        createMany: {
+          args: Prisma.SavedEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SavedEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+        }
+        delete: {
+          args: Prisma.SavedEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        update: {
+          args: Prisma.SavedEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.SavedEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SavedEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SavedEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.SavedEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SavedEventPayload>
+        }
+        aggregate: {
+          args: Prisma.SavedEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSavedEvent>
+        }
+        groupBy: {
+          args: Prisma.SavedEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SavedEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SavedEventCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1434,6 +1509,16 @@ export const ReviewScalarFieldEnum = {
 } as const
 
 export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
+
+
+export const SavedEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  savedAt: 'savedAt'
+} as const
+
+export type SavedEventScalarFieldEnum = (typeof SavedEventScalarFieldEnum)[keyof typeof SavedEventScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1791,6 +1876,7 @@ export type GlobalOmitConfig = {
   participant?: Prisma.ParticipantOmit
   payment?: Prisma.PaymentOmit
   review?: Prisma.ReviewOmit
+  savedEvent?: Prisma.SavedEventOmit
 }
 
 /* Types for Logging */
