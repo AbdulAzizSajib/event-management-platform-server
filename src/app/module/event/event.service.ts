@@ -319,6 +319,11 @@ const deleteEvent = async (
     );
   }
 
+  // Delete image from Cloudinary if exists
+  if (event.image) {
+    await deleteFileFromCloudinary(event.image);
+  }
+
   const deletedEvent = await prisma.event.delete({
     where: { id: eventId },
   });
