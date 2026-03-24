@@ -4,6 +4,10 @@ import { User } from "../../../generated/prisma/client";
 import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
 import { prisma } from "../../lib/prisma";
+import {
+  deleteFileFromCloudinary,
+  uploadFileToCloudinary,
+} from "../../config/cloudinary.config";
 import { ICreateAdmin } from "./user.interface";
 
 const createAdmin = async (payload: ICreateAdmin) => {
@@ -47,7 +51,8 @@ const createAdmin = async (payload: ICreateAdmin) => {
 
 const updateProfile = async (
   userId: string,
-  payload: { name?: string; phone?: string; image?: string },
+  payload: { name?: string; phone?: string },
+  file?: Express.Multer.File,
 ): Promise<User> => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -57,9 +62,22 @@ const updateProfile = async (
     throw new AppError(status.NOT_FOUND, "User not found");
   }
 
+  const updateData: { name?: string; phone?: string; image?: string } = {
+    ...payload,
+  };
+
+  if (file) {
+    // Delete old image if exists
+    if (user.image) {
+      await deleteFileFromCloudinary(user.image);
+    }
+    const uploaded = await uploadFileToCloudinary(file.buffer, file.originalname);
+    updateData.image = uploaded.secure_url;
+  }
+
   const updatedUser = await prisma.user.update({
     where: { id: userId },
-    data: payload,
+    data: updateData,
   });
 
   return updatedUser;

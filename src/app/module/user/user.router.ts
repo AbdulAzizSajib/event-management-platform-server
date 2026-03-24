@@ -4,6 +4,7 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { UserValidation } from "./user.validation";
 import { checkAuth } from "../../middleware/checkAuth";
 import { Role } from "../../../generated/prisma/enums";
+import { multerUpload } from "../../config/multer.config";
 
 const userRouter = Router();
 
@@ -14,10 +15,11 @@ userRouter.get(
   userController.getMyDashboard,
 );
 
-// Update profile
+// Update profile (form-data with optional image file)
 userRouter.patch(
   "/profile",
   checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN),
+  multerUpload.single("image"),
   validateRequest(UserValidation.updateProfileZodSchema),
   userController.updateProfile,
 );

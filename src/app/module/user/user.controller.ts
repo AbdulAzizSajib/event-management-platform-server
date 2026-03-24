@@ -16,7 +16,7 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateProfile = catchAsync(async (req: Request, res: Response) => {
-  const result = await userService.updateProfile(req.user.userId, req.body);
+  const result = await userService.updateProfile(req.user.userId, req.body, req.file);
 
   sendResponse(res, {
     httpStatusCode: status.OK,

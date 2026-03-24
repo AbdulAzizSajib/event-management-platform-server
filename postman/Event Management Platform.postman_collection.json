@@ -332,15 +332,26 @@
 					"name": "Update Profile",
 					"request": {
 						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
+						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"01712345678\",\n  \"image\": \"https://example.com/photo.jpg\"\n}"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "John Doe",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "01712345678",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": ""
+								}
+							]
 						},
 						"url": {
 							"raw": "{{apiUrl}}/users/profile",
@@ -352,7 +363,7 @@
 								"profile"
 							]
 						},
-						"description": "Requires authentication. All fields optional."
+						"description": "Requires authentication. form-data with optional profile image file. All fields are optional."
 					}
 				},
 				{

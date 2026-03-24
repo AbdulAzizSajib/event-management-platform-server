@@ -35,7 +35,6 @@ export const updateProfileZodSchema = z.object({
     .min(11, "Phone must be at least 11 characters")
     .max(14, "Phone must be at most 14 characters")
     .optional(),
-  image: z.string().url("Image must be a valid URL").optional(),
 });
 
 export const UserValidation = {
