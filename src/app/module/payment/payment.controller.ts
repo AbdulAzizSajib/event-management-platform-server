@@ -87,10 +87,25 @@ const verifyPayment = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getPaymentReceipt = catchAsync(async (req: Request, res: Response) => {
+  const result = await paymentService.getPaymentReceipt(
+    req.params.paymentId as string,
+    req.user.userId,
+  );
+
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "Payment receipt retrieved successfully",
+    data: result,
+  });
+});
+
 export const paymentController = {
   createCheckoutSession,
   handleStripeWebhookEvent,
   getPaymentsByEvent,
   getMyPayments,
   verifyPayment,
+  getPaymentReceipt,
 };

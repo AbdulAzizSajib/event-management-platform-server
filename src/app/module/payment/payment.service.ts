@@ -376,7 +376,7 @@ const getMyPayments = async (
 const verifyPayment = async (
   sessionId: string,
   userId: string,
-): Promise<Payment> => {
+) => {
   const payment = await prisma.payment.findUnique({
     where: { transactionId: sessionId },
     include: {
@@ -384,6 +384,30 @@ const verifyPayment = async (
         select: {
           id: true,
           title: true,
+          description: true,
+          date: true,
+          time: true,
+          venue: true,
+          eventLink: true,
+          type: true,
+          fee: true,
+          image: true,
+          organizer: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
         },
       },
     },
@@ -400,7 +424,112 @@ const verifyPayment = async (
     );
   }
 
-  return payment;
+  // Get participant status
+  const participant = await prisma.participant.findUnique({
+    where: {
+      eventId_userId: { eventId: payment.eventId, userId },
+    },
+    select: {
+      status: true,
+      joinedAt: true,
+    },
+  });
+
+  return {
+    // Payment info
+    paymentId: payment.id,
+    transactionId: payment.transactionId,
+    amount: payment.amount,
+    method: payment.method,
+    status: payment.status,
+    paidAt: payment.createdAt,
+
+    // Ticket/Participant info
+    ticket: {
+      participantStatus: participant?.status || null,
+      joinedAt: participant?.joinedAt || null,
+    },
+
+    // Event info
+    event: payment.event,
+
+    // User info
+    user: payment.user,
+  };
+};
+
+const getPaymentReceipt = async (paymentId: string, userId: string) => {
+  const payment = await prisma.payment.findUnique({
+    where: { id: paymentId },
+    include: {
+      event: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          date: true,
+          time: true,
+          venue: true,
+          eventLink: true,
+          type: true,
+          fee: true,
+          image: true,
+          organizer: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+        },
+      },
+    },
+  });
+
+  if (!payment) {
+    throw new AppError(status.NOT_FOUND, "Payment not found");
+  }
+
+  if (payment.userId !== userId) {
+    throw new AppError(
+      status.FORBIDDEN,
+      "You are not authorized to view this payment",
+    );
+  }
+
+  const participant = await prisma.participant.findUnique({
+    where: {
+      eventId_userId: { eventId: payment.eventId, userId },
+    },
+    select: {
+      status: true,
+      joinedAt: true,
+    },
+  });
+
+  return {
+    paymentId: payment.id,
+    transactionId: payment.transactionId,
+    amount: payment.amount,
+    method: payment.method,
+    status: payment.status,
+    paidAt: payment.createdAt,
+    ticket: {
+      participantStatus: participant?.status || null,
+      joinedAt: participant?.joinedAt || null,
+    },
+    event: payment.event,
+    user: payment.user,
+  };
 };
 
 export const paymentService = {
@@ -409,4 +538,5 @@ export const paymentService = {
   getPaymentsByEvent,
   getMyPayments,
   verifyPayment,
+  getPaymentReceipt,
 };

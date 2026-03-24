@@ -22,11 +22,18 @@ paymentRouter.get(
   paymentController.getMyPayments,
 );
 
-// Verify payment by session ID
+// Verify payment by session ID (after Stripe checkout)
 paymentRouter.get(
   "/verify/:sessionId",
   checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN),
   paymentController.verifyPayment,
+);
+
+// Get payment receipt by payment ID (anytime)
+paymentRouter.get(
+  "/receipt/:paymentId",
+  checkAuth(Role.USER, Role.ADMIN, Role.SUPER_ADMIN),
+  paymentController.getPaymentReceipt,
 );
 
 // Get payments for a specific event (organizer only)

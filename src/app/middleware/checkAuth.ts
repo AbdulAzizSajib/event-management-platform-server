@@ -120,6 +120,12 @@ export const checkAuth =
         );
       }
 
+      req.user = {
+        userId: verifiedToken.data!.userId,
+        email: verifiedToken.data!.email,
+        role: verifiedToken.data!.role as Role,
+      };
+
       next();
     } catch (error: any) {
       next(error);

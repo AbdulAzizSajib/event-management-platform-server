@@ -1116,6 +1116,25 @@
 						},
 						"description": "Requires authentication. Event organizer can see all payments."
 					}
+				},
+				{
+					"name": "Get Payment Receipt",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/payments/receipt/payment-id-here",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"payments",
+								"receipt",
+								"payment-id-here"
+							]
+						},
+						"description": "Requires authentication. Get full payment receipt with event details, organizer info, and ticket status. Use paymentId from My Payments list."
+					}
 				}
 			]
 		},
