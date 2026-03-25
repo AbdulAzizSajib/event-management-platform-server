@@ -11,7 +11,7 @@ export const seedSuperAdmin = async () => {
     });
 
     if (isSuperAdminExist) {
-      console.log("Super admin already exists. Skipping seeding super admin.");
+      console.log("admin already exists. Skipping seeding admin.");
       return;
     }
 
@@ -28,7 +28,7 @@ export const seedSuperAdmin = async () => {
         body: {
           email: envVars.ADMIN_EMAIL,
           password: envVars.ADMIN_PASSWORD,
-          name: "Admin",
+          name: envVars.ADMIN_NAME,
           role: Role.ADMIN,
           needPasswordChange: false,
           rememberMe: false,
@@ -49,7 +49,7 @@ export const seedSuperAdmin = async () => {
       await tx.admin.create({
         data: {
           userId: superAdminUserId,
-          name: "Admin",
+          name: envVars.ADMIN_NAME,
           email: envVars.ADMIN_EMAIL,
         },
       });

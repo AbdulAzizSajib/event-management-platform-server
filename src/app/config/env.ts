@@ -32,6 +32,7 @@ interface EnvConfig {
   };
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
+  ADMIN_NAME: string;
   ADMIN_EMAIL: string;
   ADMIN_PASSWORD: string;
 }
@@ -61,13 +62,13 @@ const loadEnvVariables = (): EnvConfig => {
     "CLOUDINARY_API_SECRET",
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
+    "ADMIN_NAME",
     "ADMIN_EMAIL",
     "ADMIN_PASSWORD",
   ];
 
   requiredEnvVariable.forEach((variable) => {
     if (!process.env[variable]) {
-      // throw new Error(`Missing required environment variable: ${variable}`);
       throw new AppError(
         status.INTERNAL_SERVER_ERROR,
         `Missing required environment variable: ${variable}`,
@@ -103,6 +104,7 @@ const loadEnvVariables = (): EnvConfig => {
     },
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET as string,
+    ADMIN_NAME: process.env.ADMIN_NAME as string,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL as string,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD as string,
   };
