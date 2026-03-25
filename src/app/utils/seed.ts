@@ -3,7 +3,7 @@ import { envVars } from "../config/env";
 import { auth } from "../lib/auth";
 import { prisma } from "../lib/prisma";
 
-export const seedSuperAdmin = async () => {
+export const seedAdmin = async () => {
   try {
     // Check by email in admin table — most reliable
     const isSuperAdminExist = await prisma.admin.findFirst({
@@ -16,15 +16,15 @@ export const seedSuperAdmin = async () => {
     }
 
     // Check if user exists but admin record missing (partial failure recovery)
-    let superAdminUserId: string;
+    let adminUserId: string;
     const existingUser = await prisma.user.findUnique({
       where: { email: envVars.ADMIN_EMAIL },
     });
 
     if (existingUser) {
-      superAdminUserId = existingUser.id;
+      adminUserId = existingUser.id;
     } else {
-      const superAdminUser = await auth.api.signUpEmail({
+      const adminUser = await auth.api.signUpEmail({
         body: {
           email: envVars.ADMIN_EMAIL,
           password: envVars.ADMIN_PASSWORD,
@@ -34,12 +34,12 @@ export const seedSuperAdmin = async () => {
           rememberMe: false,
         },
       });
-      superAdminUserId = superAdminUser.user.id;
+      adminUserId = adminUser.user.id;
     }
 
     await prisma.$transaction(async (tx) => {
       await tx.user.update({
-        where: { id: superAdminUserId },
+        where: { id: adminUserId },
         data: {
           role: Role.ADMIN,
           emailVerified: true,
@@ -48,7 +48,7 @@ export const seedSuperAdmin = async () => {
 
       await tx.admin.create({
         data: {
-          userId: superAdminUserId,
+          userId: adminUserId,
           name: envVars.ADMIN_NAME,
           email: envVars.ADMIN_EMAIL,
         },

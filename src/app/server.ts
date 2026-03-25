@@ -2,14 +2,13 @@ import { Server } from "node:http";
 import app from "./app";
 import { envVars } from "./config/env";
 import { prisma } from "./lib/prisma";
-
-import { seedSuperAdmin } from "./utils/seed";
+import { seedAdmin } from "./utils/seed";
 
 let server: Server;
 
 async function main() {
   try {
-    await seedSuperAdmin();
+    await seedAdmin();
     await prisma.$connect();
     console.log("Database connected successfully.");
 
