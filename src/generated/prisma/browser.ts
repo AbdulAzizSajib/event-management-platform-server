@@ -48,6 +48,16 @@ export type Verification = Prisma.VerificationModel
  */
 export type Category = Prisma.CategoryModel
 /**
+ * Model Conversation
+ * 
+ */
+export type Conversation = Prisma.ConversationModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel
+/**
  * Model Event
  * 
  */

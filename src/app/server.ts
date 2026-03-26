@@ -1,8 +1,9 @@
-import { Server } from "node:http";
+import { createServer, Server } from "node:http";
 import app from "./app";
 import { envVars } from "./config/env";
 import { prisma } from "./lib/prisma";
 import { seedAdmin } from "./utils/seed";
+import { initializeSocket } from "./lib/socket";
 
 let server: Server;
 
@@ -12,7 +13,16 @@ async function main() {
     await prisma.$connect();
     console.log("Database connected successfully.");
 
-    server = app.listen(envVars.PORT, () => {
+    server = createServer(app);
+
+    // Initialize Socket.io
+    const io = initializeSocket(server);
+    console.log("Socket.io initialized");
+
+    // Make io accessible if needed
+    app.set("io", io);
+
+    server.listen(envVars.PORT, () => {
       console.log(`Server is running on port ${envVars.PORT}`);
     });
   } catch (error) {

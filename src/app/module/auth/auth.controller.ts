@@ -70,6 +70,9 @@ const getNewToken = catchAsync(async (req: Request, res: Response) => {
   if (!refreshToken) {
     throw new AppError(status.UNAUTHORIZED, "Refresh token is missing");
   }
+  if (!betterAuthSessionToken) {
+    throw new AppError(status.UNAUTHORIZED, "Session token is missing");
+  }
   const result = await authService.getNewToken(
     refreshToken,
     betterAuthSessionToken,
@@ -89,6 +92,7 @@ const getNewToken = catchAsync(async (req: Request, res: Response) => {
       accessToken,
       refreshToken: newRefreshToken,
       sessionToken,
+      token: sessionToken,
     },
   });
 });
@@ -227,6 +231,8 @@ const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
 
   tokenUtils.setAccessTokenCookie(res, accessToken);
   tokenUtils.setRefreshTokenCookie(res, refreshToken);
+  // Re-set session token with consistent cookie settings
+  tokenUtils.setBetterAuthSessionCookie(res, sessionToken);
   // ?redirect=//profile -> /profile
   const isValidRedirectPath =
     redirectPath.startsWith("/") && !redirectPath.startsWith("//");

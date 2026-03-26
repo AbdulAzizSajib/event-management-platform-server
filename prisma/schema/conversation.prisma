@@ -1,0 +1,38 @@
+model Conversation {
+    id          String    @id @default(uuid())
+
+    eventId     String
+    event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+    userId      String    // The user who initiated the chat
+    user        User      @relation("UserConversations", fields: [userId], references: [id], onDelete: Cascade)
+
+    organizerId String    // Event organizer
+    organizer   User      @relation("OrganizerConversations", fields: [organizerId], references: [id], onDelete: Cascade)
+
+    messages    Message[]
+
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+
+    @@unique([eventId, userId]) // One conversation per user per event
+    @@map("conversations")
+}
+
+model Message {
+    id             String       @id @default(uuid())
+
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    senderId       String
+    sender         User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+
+    content        String
+    isRead         Boolean      @default(false)
+
+    createdAt      DateTime     @default(now())
+
+    @@index([conversationId])
+    @@map("messages")
+}

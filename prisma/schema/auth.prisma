@@ -26,8 +26,11 @@ model User {
   payments        Payment[]
   invitations     Invitation[]  @relation("InviterRelation")
   invitedTo       Invitation[]  @relation("InviteeRelation")
-  reviews         Review[]
-  savedEvents     SavedEvent[]
+  reviews                Review[]
+  savedEvents            SavedEvent[]
+  userConversations      Conversation[] @relation("UserConversations")
+  organizerConversations Conversation[] @relation("OrganizerConversations")
+  sentMessages           Message[]      @relation("SentMessages")
 
   @@unique([email])
   @@map("user")

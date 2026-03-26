@@ -141,11 +141,25 @@ const getMe = async (user: IRequestUser) => {
 };
 
 const getNewToken = async (refreshToken: string, sessionToken: string) => {
-  const isSessionExits = await prisma.session.findUnique({
-    where: {
-      token: sessionToken,
-    },
+  // Try exact match first, then decoded/encoded variants
+  let isSessionExits = await prisma.session.findUnique({
+    where: { token: sessionToken },
   });
+
+  // Fallback: try decoded version (Google login may URL-encode the token)
+  if (!isSessionExits) {
+    try {
+      const decoded = decodeURIComponent(sessionToken);
+      if (decoded !== sessionToken) {
+        isSessionExits = await prisma.session.findUnique({
+          where: { token: decoded },
+        });
+      }
+    } catch {
+      // ignore decode errors
+    }
+  }
+
   if (!isSessionExits) {
     throw new AppError(status.UNAUTHORIZED, "Invalid session token");
   }
