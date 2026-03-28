@@ -203,17 +203,29 @@ const googleLogin = catchAsync((req: Request, res: Response) => {
 const googleLoginSuccess = catchAsync(async (req: Request, res: Response) => {
   const redirectPath = (req.query.redirect as string) || "/dashboard";
 
-  const sessionToken = req.cookies["better-auth.session_token"];
+  // Debug: log all cookies to find the session token
+  console.log("Google Success - All cookies:", Object.keys(req.cookies));
+
+  const sessionToken =
+    req.cookies["better-auth.session_token"] ||
+    req.cookies["__Secure-better-auth.session_token"] ||
+    req.cookies["session_token"];
+
+  console.log("Google Success - Session token found:", !!sessionToken);
 
   if (!sessionToken) {
     return res.redirect(`${envVars.FRONTEND_URL}/login?error=oauth_failed`);
   }
 
+  // Try all possible cookie names when calling getSession
+  const cookieHeader = req.headers.cookie || "";
   const session = await auth.api.getSession({
     headers: {
-      Cookie: `better-auth.session_token=${sessionToken}`,
+      Cookie: cookieHeader,
     },
   });
+
+  console.log("Google Success - Session found:", !!session);
 
   if (!session) {
     return res.redirect(`${envVars.FRONTEND_URL}/login?error=no_session_found`);
